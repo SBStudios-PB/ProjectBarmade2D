@@ -6,6 +6,80 @@ using UnityEngine;
 
 public class BrokenGlass : MonoBehaviour
 {
+<<<<<<< HEAD:Assets/Scripts/BrokenGlass.cs
+    private ItemHolder itemHolder;
+    private TrashCan trashCan;
+    private PlayerStats playerStats;
+    [SerializeField] GameObject glass;
+    bool touchingBrokenGlass;
+    bool touchingTrashCan;
+
+    void Start()
+    {
+        itemHolder = GameObject.FindWithTag("Player").GetComponentInChildren<ItemHolder>();
+        trashCan = GameObject.FindWithTag("TrashCan").GetComponent<TrashCan>();
+        playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.E) && touchingBrokenGlass && playerStats.getHolding() == false)
+        {
+            GiveGlass();
+            playerStats.changeHolding();
+        }
+        else if(Input.GetKeyDown(KeyCode.E) && touchingTrashCan && trashCan.fullness < 100 && playerStats.getHolding())
+        {
+            DestroyGlass();
+            trashCan.addFullness(10);
+            playerStats.changeHolding();
+        }   
+        else if(Input.GetKeyDown(KeyCode.F) && playerStats.getHolding())
+        {
+            DropGlass();
+            playerStats.changeHolding();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if(col.gameObject.CompareTag("Player"))
+        {
+            touchingBrokenGlass = true;
+        }
+        if(col.gameObject.CompareTag("TrashCan"))
+        {
+            touchingTrashCan = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D col)
+    {
+        touchingBrokenGlass = false;
+        touchingTrashCan = false;
+    }
+    
+    public void GiveGlass()
+    {
+        itemHolder.GiveObject(gameObject);
+    }
+
+    public void DropGlass()
+    {
+        itemHolder.DropItem();
+    }
+
+    public void SpawnBrokenGlass()
+    {
+        GameObject clone = GameObject.Instantiate(glass);
+        itemHolder.GiveObject(clone);
+        clone.SetActive(true);
+    }
+
+    public void DestroyGlass()
+    {
+        itemHolder.DestroyObject();
+=======
     public Transform holdSpot;
     public LayerMask pickUpMask;
     public LayerMask npcMask;
@@ -59,5 +133,6 @@ public class BrokenGlass : MonoBehaviour
         itemHolding = null;
 
         npc.GetComponent<TrashCan>().addFullness(10);
+>>>>>>> main:Assets/Scripts/Objects/BrokenGlass.cs
     }
 }
